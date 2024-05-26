@@ -68,7 +68,14 @@ const AuthForm = () => {
                         {variant === 'REGISTER' && (
                             <Input
                                 id="name"
-                                label="name"
+                                label="First Name"
+                                register={register}
+                                errors={errors} />
+                        )}
+                        {variant === 'REGISTER' && (
+                            <Input
+                                id="name"
+                                label="Last Name"
                                 register={register}
                                 errors={errors} />
                         )}

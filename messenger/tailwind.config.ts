@@ -8,12 +8,19 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['ui-sans-serif', 'system-ui'],
+        serif: ['ui-serif', 'Georgia'],
+        mono: ['ui-monospace', 'SFMono-Regular'],
+      },
+    },
   },
   plugins: [
     require("@tailwindcss/forms")({
-      PiStrategy: 'class'
+      strategy: 'class'
     })
   ],
 };
+
 export default config;
