@@ -1,11 +1,20 @@
-'use client';
-import React, { useState } from 'react';
-
+'use client'
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { IoEye, IoEyeOff } from 'react-icons/io5';
 import clsx from "clsx";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
-import { IoEye, IoEyeOff } from 'react-icons/io5';
 
-interface InputProps {
+const formSchema = Yup.object().shape({
+    password: Yup.string()
+        .required("Password is required")
+        .min(4, "Password length should be at least 4 characters")
+        .max(12, "Password cannot exceed more than 12 characters"),
+});
+
+interface CreatePassProps {
     label: string;
     id: string;
     type?: string;
@@ -13,9 +22,10 @@ interface InputProps {
     register: UseFormRegister<FieldValues>,
     errors: FieldErrors
     disabled?: boolean;
+    formState: { errors: any },
 }
 
-const Input: React.FC<InputProps> = ({
+const CreatePass: React.FC<CreatePassProps> = ({
     label,
     id,
     type = 'text',
@@ -44,9 +54,10 @@ const Input: React.FC<InputProps> = ({
                     errors[id] && "focus:ring-rose-500",
                     disabled && "opacity-50 cursor-default",
                 )}
-            />
-                  {errors?.firstName && <p>{errors.firstName.message}</p>}
-
+                {...register("password")}
+            ></input>
+            <div>{errors?.password?.message}</div>
+            {/* <p className="alerts">{errors.password?.message}</p> */}
             {type === 'password' && (
                 <button
                     type="button"
@@ -57,7 +68,7 @@ const Input: React.FC<InputProps> = ({
                 </button>
             )}
         </div>
-    )
+    );
 };
 
-export default Input;
+export default CreatePass;

@@ -2,12 +2,16 @@
 import Image from "next/image";
 
 import { useCallback, useState } from "react";
-import { FieldValue, FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValue, FieldValues, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { BsGithub, BsGoogle, BsInstagram } from "react-icons/bs";
 
 import Input from "../../components/inputs/input";
 import Button from "@/app/components/Button";
 import AuthSocialButton from "./AuthSocialButton";
+import CreatePass from "@/app/components/CreatePass";
+
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup"
 
 type Variant = 'LOGIN' | 'REGISTER';
 
@@ -54,6 +58,35 @@ const AuthForm = () => {
         // NextAuth Social Sign In
     }
 
+    const formSchema = Yup.object().shape({
+        password: Yup
+            .string()
+            .max(32, "Max password length is 32")
+            .required("Password is required")
+            .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+            ),
+    });
+
+    type FormValues = {
+        password: string
+      }
+      
+      const resolver: Resolver<FormValues> = async (values) => {
+        return {
+          values: values.password ? values : {},
+          errors: !values.password
+            ? {
+                password: {
+                  type: "required",
+                  message: "This is required.",
+                },
+              }
+            : {},
+        }
+      }
+
     return (
         <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -91,6 +124,16 @@ const AuthForm = () => {
                             type="password"
                             register={register}
                             errors={errors} />
+                        {variant === 'REGISTER' && (
+                            <Input
+                                id="password"
+                                label="Password"
+                                type="password"
+                                register={register}
+                                {...register("password")}
+                                errors={errors.password?.message}
+                            />
+                        )}
                         <div>
                             <Button
                                 disabled={isLoading}
@@ -131,7 +174,6 @@ const AuthForm = () => {
                                 icon={BsInstagram}
                                 onClick={() => socialAction('instagram')}
                             />
-
                         </div>
 
                     </div>
