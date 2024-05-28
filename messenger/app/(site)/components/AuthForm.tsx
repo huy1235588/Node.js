@@ -1,23 +1,32 @@
 'use client';
 import Image from "next/image";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValue, FieldValues, Resolver, SubmitHandler, useForm } from "react-hook-form";
-import { BsGithub, BsGoogle, BsInstagram } from "react-icons/bs";
+import { BsDiscord, BsGithub, BsGoogle } from "react-icons/bs";
 
 import Input from "../../components/inputs/input";
 import Button from "@/app/components/Button";
 import AuthSocialButton from "./AuthSocialButton";
-import CreatePass from "@/app/components/CreatePass";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup"
 
 type Variant = 'LOGIN' | 'REGISTER';
 
 const AuthForm = () => {
+    const session = useSession();
+    const router = useRouter();
     const [variant, setvariant] = useState<Variant>('LOGIN');
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+            router.push('/users')
+        }
+    }, [session?.status, router])
 
     const toggleVariant = useCallback(() => {
         if (variant === 'LOGIN') {
@@ -45,47 +54,45 @@ const AuthForm = () => {
         setIsLoading(true);
 
         if (variant === 'REGISTER') {
-            // Axios Register
+            axios.post('/api/register', data)
+                .then(() => setvariant('LOGIN'))
+                .then(() => signIn('credentials', data)) //both REGISTER and LOGIN
+                .catch(() => toast.error('Something went wrong'))
+                .finally(() => setIsLoading(false))
         }
         if (variant == 'LOGIN') {
-            // NextAuth SignIn
+            signIn('credentials', {
+                ...data,
+                redirect: false
+            })
+                .then((callback) => {
+                    if (callback?.error) {
+                        toast.error('Invalid credentials')
+                    }
+                    if (callback?.ok && !callback?.error) {
+                        toast.success('Logged in!')
+                        router.push('./users')
+                    }
+                })
+                .finally(() => setIsLoading(false))
         }
     }
 
     const socialAction = (action: string) => {
         setIsLoading(true);
 
-        // NextAuth Social Sign In
+        signIn(action, { redirect: false })
+            .then((callback) => {
+                if (callback?.error) {
+                    toast.error('Invalid condentials')
+                }
+
+                if (callback?.ok) {
+                    toast.success('Logged in!')
+                }
+            })
+            .finally(() => setIsLoading(false))
     }
-
-    const formSchema = Yup.object().shape({
-        password: Yup
-            .string()
-            .max(32, "Max password length is 32")
-            .required("Password is required")
-            .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-            ),
-    });
-
-    type FormValues = {
-        password: string
-      }
-      
-      const resolver: Resolver<FormValues> = async (values) => {
-        return {
-          values: values.password ? values : {},
-          errors: !values.password
-            ? {
-                password: {
-                  type: "required",
-                  message: "This is required.",
-                },
-              }
-            : {},
-        }
-      }
 
     return (
         <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -101,39 +108,28 @@ const AuthForm = () => {
                         {variant === 'REGISTER' && (
                             <Input
                                 id="name"
-                                label="First Name"
+                                label="Name"
                                 register={register}
-                                errors={errors} />
-                        )}
-                        {variant === 'REGISTER' && (
-                            <Input
-                                id="name"
-                                label="Last Name"
-                                register={register}
-                                errors={errors} />
+                                errors={errors}
+                                disabled={isLoading}
+                            />
                         )}
                         <Input
                             id="email"
                             label="Email address"
                             type="email"
                             register={register}
-                            errors={errors} />
+                            errors={errors}
+                            disabled={isLoading}
+                        />
                         <Input
                             id="password"
                             label="Password"
                             type="password"
                             register={register}
-                            errors={errors} />
-                        {variant === 'REGISTER' && (
-                            <Input
-                                id="password"
-                                label="Password"
-                                type="password"
-                                register={register}
-                                {...register("password")}
-                                errors={errors.password?.message}
-                            />
-                        )}
+                            errors={errors}
+                            disabled={isLoading}
+                        />
                         <div>
                             <Button
                                 disabled={isLoading}
@@ -171,8 +167,8 @@ const AuthForm = () => {
                                 onClick={() => socialAction('google')}
                             />
                             <AuthSocialButton
-                                icon={BsInstagram}
-                                onClick={() => socialAction('instagram')}
+                                icon={BsDiscord}
+                                onClick={() => socialAction('discord')}
                             />
                         </div>
 
