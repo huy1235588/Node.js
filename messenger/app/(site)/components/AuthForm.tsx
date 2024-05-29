@@ -98,9 +98,9 @@ const AuthForm = () => {
         <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Image alt="Logo" height="48" width="48" className="mx-auto w-auto" src="/images/logo.png" />
-                <h2 className="mt-6 text-center text-3xl fond-bold tracking-tight text-gray-900">
+                <h1 className="mt-6 text-center text-3xl fond-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
                     {variant === 'LOGIN' ? 'Sign in' : 'Create your account'}
-                </h2>
+                </h1>
             </div>
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
