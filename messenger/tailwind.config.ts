@@ -14,6 +14,9 @@ const config: Config = {
         serif: ['ui-serif', 'Georgia'],
         mono: ['ui-monospace', 'SFMono-Regular'],
       },
+      colors: {
+        'background-leftmenu': '#0091ff',
+      }
     },
   },
   plugins: [

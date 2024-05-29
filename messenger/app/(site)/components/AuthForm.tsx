@@ -55,7 +55,8 @@ const AuthForm = () => {
 
         if (variant === 'REGISTER') {
             axios.post('/api/register', data)
-                .then(() => setvariant('LOGIN'))
+                .then(() => toast.success('Sign Up Success!'))
+                //.then(() => setvariant('LOGIN'))
                 .then(() => signIn('credentials', data)) //both REGISTER and LOGIN
                 .catch(() => toast.error('Something went wrong'))
                 .finally(() => setIsLoading(false))
@@ -98,7 +99,7 @@ const AuthForm = () => {
         <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Image alt="Logo" height="48" width="48" className="mx-auto w-auto" src="/images/logo.png" />
-                <h1 className="mt-6 text-center text-3xl fond-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                <h1 className="mt-6 text-center text-3xl fond-bold tracking-tight">
                     {variant === 'LOGIN' ? 'Sign in' : 'Create your account'}
                 </h1>
             </div>
