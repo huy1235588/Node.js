@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 
-import { PiAddressBook, PiChatCircleText, PiSignOut } from "react-icons/pi";
+import { PiChatCircleText, PiChatCircleTextFill, PiSignOut } from "react-icons/pi";
 import { signOut } from "next-auth/react";
 
 import useConversation from "./useConversation";
+import { FaAddressBook, FaRegAddressBook } from "react-icons/fa6";
 
 const useRoutes = () => {
     const pathName = usePathname();
@@ -14,14 +15,14 @@ const useRoutes = () => {
         {
             label: 'Chat',
             href: '/conversations',
-            icon: PiChatCircleText,
+            icon: pathName === '/conversations' || !!conversationId ? PiChatCircleTextFill : PiChatCircleText,
             active: pathName === '/conversations' || !!conversationId
         },
         {
             label: 'Users',
-            href: 'users',
-            icon: PiAddressBook,
-            active: pathName === '/useFrs'
+            href: '/users',
+            icon: pathName === '/users' ? FaAddressBook : FaRegAddressBook,
+            active: pathName === '/users'
         },
         {
             label: 'Logout',

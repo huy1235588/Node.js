@@ -9,9 +9,9 @@ const DesktopSidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-16 xl:px-6 lg:overflow-y-auto lg:bg-background-leftmenu lg:pb-4 lg:flex lg:flex-col justify-between">
+        <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-16 xl:px-6 lg:overflow-y-auto lg:bg-background-left-menu lg:pb-4 lg:flex lg:flex-col justify-between">
             <nav className="mt-4 flex flex-col justify-between">
-                <ul role="list" className="flex flex-col items-center space-y-10">
+                <ul role="list" className="flex flex-col items-center">
                     {routes.map((item) => (
                         <DesktopItem
                             key={item.label}

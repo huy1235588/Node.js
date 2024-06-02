@@ -26,10 +26,12 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
 
     return (
         <li onClick={handleClick} className="">
-            <Link href={href}>
-                <Icon className="h-6 w-6 shrink-0" color="white" />
-                <span>
-                    {/* {label} */}
+            <Link href={href} className={clsx('group flex justify-center gap-x-3 rounded-md p-4.5 text-sm leading-6 font-semibold text-gray-500  hover:bg-black/10',
+                active && 'bg-backgroround-left-menu-selected text-black hover:bg-backgroround-left-menu-selected'
+            )}>
+                <Icon className="h-7 w-7 shrink-0" color="white" />
+                <span className="sr-only">
+                    {label}
                 </span>
             </Link>
         </li>

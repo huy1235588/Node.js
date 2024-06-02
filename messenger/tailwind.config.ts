@@ -10,12 +10,27 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['ui-sans-serif', 'system-ui'],
-        serif: ['ui-serif', 'Georgia'],
-        mono: ['ui-monospace', 'SFMono-Regular'],
+        sans: [
+          'system-ui',
+          {
+            fontFeatureSettings: '"kern", "liga", "clig", "calt"',
+            fontVariationSettings: '"wght" 400'
+          }
+        ],
+        mono: [
+          'Menlo',
+          {
+            fontFeatureSettings: '"liga", "dlig", "hlig", "calt"',
+            fontVariationSettings: '"wght" 400'
+          }
+        ]
       },
       colors: {
-        'background-leftmenu': '#0091ff',
+        'background-left-menu': '#0091ff',
+        'backgroround-left-menu-selected': '#006edc',
+      },
+      spacing: {
+        '4.5': '1.125rem',
       }
     },
   },
