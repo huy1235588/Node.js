@@ -103,8 +103,8 @@ const AuthForm = () => {
                     {variant === 'LOGIN' ? 'Sign in' : 'Create your account'}
                 </h1>
             </div>
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md xs:mx-auto xs:w-full xs:max-w-md">
+                <div className="bg-white px-4 py-8 shadow sm:rounded-xl sm:px-10 xs:rounded-lg">
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         {variant === 'REGISTER' && (
                             <Input

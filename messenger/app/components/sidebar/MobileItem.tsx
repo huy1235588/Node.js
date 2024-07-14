@@ -25,11 +25,13 @@ const MobileItem: React.FC<MobileItemrProps> = ({
     }
 
     return (
-        <Link onClick={onClick} href={href} className={clsx('group flex flex-wrap gap-x-3 text-sm leading-6 font-semibold w-full justify-center text-gray-500 hover:bg-gray-200 transition-colors',
-            active && "bg-gray-100 text-background-left-menu p-2", !active && "p-4  hover:text-black"
+        <Link onClick={onClick} href={href} className={clsx('group flex flex-wrap gap-x-3 text-sm leading-6 font-semibold w-full justify-center text-gray-500 rounded-full hover:bg-gray-200 transition-colors',
+            active && " text-background-left-menu p-2", !active && "p-4  hover:text-black"
         )}>
-            <Icon classname="h6 w-6" />
-            <span className={clsx(!active && 'sr-only ', active && "block w-full text-center leading-4")} >
+            <Icon className="h6 w-6"
+                 color={active ? "#0091ff" : undefined}
+            />
+            <span className={clsx(!active && 'sr-only', active && "block w-full text-center leading-4 text-menu-selected")} >
                 {label}
             </span>
         </Link>

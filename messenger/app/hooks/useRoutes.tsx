@@ -5,7 +5,8 @@ import { PiChatCircleText, PiChatCircleTextFill, PiSignOut } from "react-icons/p
 import { signOut } from "next-auth/react";
 
 import useConversation from "./useConversation";
-import { FaAddressBook, FaRegAddressBook } from "react-icons/fa6";
+import { BsPeople, BsPeopleFill } from "react-icons/bs";
+import { IconType } from "react-icons";
 
 const useRoutes = () => {
     const pathName = usePathname();
@@ -21,7 +22,7 @@ const useRoutes = () => {
         {
             label: 'Users',
             href: '/users',
-            icon: pathName === '/users' ? FaAddressBook : FaRegAddressBook,
+            icon: pathName === '/users' ? BsPeopleFill : BsPeople,
             active: pathName === '/users'
         },
         {

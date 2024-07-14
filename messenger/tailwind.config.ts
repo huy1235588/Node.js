@@ -26,11 +26,15 @@ const config: Config = {
         ]
       },
       colors: {
+        'menu-selected': '#0091ff',
         'background-left-menu': '#0091ff',
         'backgroround-left-menu-selected': '#006edc',
       },
       spacing: {
         '4.5': '1.125rem',
+      },
+      screens: {
+        'xs': { 'max': '640px' },
       }
     },
   },
