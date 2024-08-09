@@ -36,6 +36,7 @@ function ErrorPage({ errorMessage }) {
                 <div className='eye' ref={eyeRef1}></div>
                 <div className='eye' ref={eyeRef2}></div>
                 <p className='sub-text'>Error: {errorMessage}.</p>
+                <a id="home" href='./' draggable="false">Go back</a>
             </div>
         </article>
     )

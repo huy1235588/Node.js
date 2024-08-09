@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios'
 
 import './App.css';
 import ErrorPage from './component/ErrorPage';
 import LoaderPage from './component/LoaderPage';
+import InputForm from './component/input/InputForm'
 
 function App() {
-    const [data, setData] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [input, setInput] = useState('');
+    const [content, setContent] = useState('');
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const fetchData = async (event) => {
+        event.preventDefault();
+        setContent("");
+        setLoading(true);
+        try {
+            // Gọi API backend
+            const response = await axios.get('http://192.168.1.13:3001/api/data', {
+                params: { input }
+            }); // URL
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await sleep(2000); // Chờ 1 giây trước khi gửi yêu cầu
-                // Gọi API backend
-                const response = await fetch('http://192.168.1.13:3001/api/data'); // URL
+            // if (!response.ok) {
+            //     throw new Error(`HTTP error! status: ${response.status}`);
+            // }
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+            const data = await response.data;
 
-                setData(response.data.title);
+            setContent(data.titleVideoContent || "Not found");
 
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -56,11 +58,16 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <p
-                    dangerouslySetInnerHTML={{
-                        __html: data
-                    }}
+                <InputForm
+                    type='text'
+                    input={input}
+                    setInput={setInput}
+                    onSubmit={fetchData}
                 />
+
+                <p>
+                    Title of video is: {content}
+                </p>
 
                 <a
                     className="App-link"
